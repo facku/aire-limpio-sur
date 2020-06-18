@@ -1,41 +1,3 @@
-<template>
-  <div class="container">
-    <div class="wrap">
-      <div class="img">
-        <video autoplay muted loop id="myVideo">
-          <source
-            src="https://assets-global.website-files.com/5bcb46130508ef456a7b2930/5d06154c6a9360b7a49538b6_drawkit-grape-pack-illustration-8-transcode.mp4"
-            type="video/mp4"
-          />
-        </video>
-      </div>
-
-      <div class="form">
-        <h1>Consulta Online</h1>
-        <form v-on:submit.prevent="search()">
-          <input v-model="q" type="number" placeholder="Número de Identificacion" required />
-          <button>Buscar</button>
-        </form>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: "Consulta",
-  data: () => ({
-    q: ""
-  }),
-  methods: {
-    search() {
-      alert(this.q);
-    }
-  }
-};
-</script>
-
-<style lang="scss" scoped>
 .container {
   min-height: 100vh;
   display: flex;
@@ -48,26 +10,57 @@ export default {
   margin: 0;
 }
 
+input,
+button {
+  padding: 1em 1.25em;
+  background-color: rgba(132, 0, 255, 0.3);
+  border: none;
+  display: block;
+  font-size: 1.16rem;
+  color: white;
+  width: 100%;
+  margin-top: 1em;
+  cursor: pointer;
+  outline: none;
+  &:hover {
+    background-color: rgba(60, 255, 0, 0.75);
+    transition: all 0.7s linear;
+  }
+}
+
 .wrap {
   display: flex;
   flex-basis: 1;
   flex-direction: column;
   @media screen and (min-width: 768px) {
     flex-direction: row;
+    border-radius: 16px;
   }
-  border-radius: 16px;
-  overflow: hidden;
 }
 
 .img {
+  opacity: 0;
   display: flex;
-  justify-content: center;
+  width: 200px;
+  height: 200px;
+  background-image: url('../../assets/logo.png');
+  background-size: contain;
+  animation: intro-img 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
 
-  & video {
-    width: 200px;
-    @media screen and (min-width: 768px) {
-      width: 400px;
+  @keyframes intro-img {
+    from {
+      transform: translateX(-100%) scale(0);
+      opacity: 0;
     }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    border-radius: 16px 0px 0px 16px;
+    width: 400px;
+    height: 460px;
   }
 }
 
@@ -75,16 +68,16 @@ export default {
   opacity: 0;
   display: flex;
   flex-direction: column;
-  background-color: rgba(8, 25, 82, 0.1);
+  background-color: rgba(8, 25, 82, 0.3);
   padding: 0.75em;
   margin-top: 1em;
-  border-radius: 0px 16px 16px 0px;
+  justify-content: center;
 
-  animation: intro-form 1s 2s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
+  animation: intro-form 0.5s 0.25s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
 
   @keyframes intro-form {
     from {
-      transform: translateX(100%);
+      transform: translateX(100%) scale(0);
       opacity: 0;
     }
     to {
@@ -95,7 +88,19 @@ export default {
   @media screen and (min-width: 768px) {
     margin-top: 0;
     padding: 2em;
-    border: 2px solid white;
+    border-radius: 0px 16px 16px 0px;
+    background-color: rgba(14, 82, 8, 0.1);
+    border-top: 2px solid rgba(255, 255, 255, 0.4);
+    border-right: 2px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.4);
+
+    &:hover {
+      border-radius: 0px 16px 16px 0px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-top: 2px solid rgba(255, 255, 255, 0.8);
+      border-right: 2px solid rgba(255, 255, 255, 0.8);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.8);
+    }
   }
 
   input::-webkit-outer-spin-button,
@@ -104,19 +109,8 @@ export default {
     margin: 0;
   }
 
-  input[type="number"] {
+  input[type='number'] {
     -moz-appearance: textfield;
-  }
-
-  form input,
-  button {
-    padding: 1em 1.25em;
-    background-color: rgba(132, 0, 255, 0.3);
-    border: none;
-    display: block;
-    font-size: 1.16rem;
-    color: white;
-    width: 100%;
   }
 
   input {
@@ -133,15 +127,39 @@ export default {
       border-bottom: 4px solid rgba(255, 255, 255, 0.75);
     }
   }
+}
 
-  form button {
-    margin-top: 1em;
-    cursor: pointer;
+.form-enter {
+  animation: intro-form 0.5s 0.7s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards,
+    intro-img 0.5s 0.8s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
+}
 
-    &:hover {
-      background-color: rgba(60, 255, 0, 0.75);
-      transition: all 0.7s linear;
-    }
+.form-leave-active {
+  animation: intro-form 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards reverse,
+    intro-img 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards reverse;
+}
+
+.results {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  animation: resultados-intro 0.5s 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
+}
+
+.resultados-enter-active {
+  animation: resultados-intro 0.5s 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards;
+}
+.resultados-leave-active {
+  animation: resultados-intro 0.5s cubic-bezier(0.83, 1.48, 0.58, 1.07) forwards reverse;
+}
+
+@keyframes resultados-intro {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
   }
 }
-</style>

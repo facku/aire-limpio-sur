@@ -8,19 +8,22 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
+    component: Home
   },
   {
     path: '/consulta',
     name: 'Consulta',
-    component: () => import(/* webpackChunkName: "consulta" */ '../views/Consulta.vue'),
-  },
+    component: () =>
+      import(
+        /* webpackChunkName: "consulta" */ '../views/Consulta/Consulta.vue'
+      )
+  }
 ];
 
 const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
-  routes,
+  routes
 });
 
 //Mando todas las rutas a consulta, unica feature desarollada
